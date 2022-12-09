@@ -2,10 +2,12 @@ import { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import authApi from '../services/auth.service';
 import { AuthContext } from '../context/auth.context';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const { storeSetToken, authentication } = useContext(AuthContext);
+  const { storeSetToken, authentication, setIsLoading } = useContext(AuthContext);
 
   const onChangeUser = (event) => {
     const { name, value } = event.target;
@@ -15,9 +17,10 @@ const Login = () => {
   const LoginUser = (event) => {
     event.preventDefault();
     authApi.loginUser(user).then((res) => {
-      console.log(res.token);
       storeSetToken(res.token);
+      setIsLoading(true);
       authentication();
+      navigate('/me')
     });
   };
 

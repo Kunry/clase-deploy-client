@@ -9,7 +9,7 @@ import './navbar.css';
 import { AuthContext } from '../../context/auth.context';
 
 function NavBarComponent() {
-  const { logOut, user } = useContext(AuthContext);
+  const { logOut, isLoggedIn } = useContext(AuthContext);
 
   return (
     <>
@@ -32,7 +32,7 @@ function NavBarComponent() {
                 Create
               </Link>
             </Nav.Link>
-            {user ? (
+            {isLoggedIn ? (
               <>
                 <Nav.Link as='span'>
                   <Link className='link-navbar' to='/me'>

@@ -13,6 +13,11 @@ class UserAPI extends InitAxios {
     }).then((response) => response.data);
   }
 
+  // config --> header --> authorization --> Bearer token
+  // axios.get(ruta, config) 
+  // axios.delete(ruta, config)
+  // axios.post(ruta, body, config)
+  // axios.put(ruta, body, config)
 }
 
 export default new UserAPI();

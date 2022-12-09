@@ -15,7 +15,7 @@ import Login from './pages/LoginPage';
 import UserPage from './pages/UserPage';
 
 import { AuthContext } from './context/auth.context';
-
+import IsPrivate from './components/Routes/IsPrivate';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -27,7 +27,14 @@ function App() {
       <NavBarComponent />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/me' element={<UserPage />} />
+        <Route
+          path='/me'
+          element={
+            <IsPrivate>
+              <UserPage />
+            </IsPrivate>
+          }
+        />
         <Route path='/registro' element={<Registro />} />
         <Route path='/login' element={<Login />} />
         <Route path='/galery' element={<CocktailList />} />

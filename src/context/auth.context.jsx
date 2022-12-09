@@ -8,6 +8,8 @@ const LOCAL_STORAGE_AUTH = 'tokenAuth';
 
 export const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const storeSetToken = (token) => {
@@ -16,7 +18,7 @@ export const AuthProvider = (props) => {
 
   const destroyToken = () => {
     localStorage.removeItem(LOCAL_STORAGE_AUTH);
-  }
+  };
 
   const authentication = () => {
     const token = localStorage.getItem(LOCAL_STORAGE_AUTH);
@@ -26,30 +28,37 @@ export const AuthProvider = (props) => {
         .me(token)
         .then((user) => {
           setUser(user);
+          setIsLoggedIn(true)
+          // navigate('/me');
         })
         .catch((err) => {
           console.error(err);
+          setIsLoggedIn(false)
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } else {
       setUser(null);
-      navigate('/');
+      setIsLoggedIn(false)
+      setIsLoading(false);
     }
   };
 
   const logOut = () => {
     destroyToken();
     authentication();
-  }
+  };
 
   useEffect(() => {
     authentication();
-  }, [])
+  }, []);
 
-  return(
+  return (
     <AuthContext.Provider
-      value={{ authentication, storeSetToken, logOut, user }}
+      value={{ authentication, storeSetToken, isLoading, setIsLoading, isLoggedIn, logOut, user }}
     >
       {props.children}
     </AuthContext.Provider>
-  )
+  );
 };
